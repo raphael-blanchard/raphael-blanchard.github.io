@@ -12,16 +12,17 @@ profile:
   image_circular: false # crops the image to make it circular
   more_info: >
 
-news: true  # includes a list of news items
+news: false  # includes a list of news items
 latest_posts: false  # includes a list of the newest posts
 selected_papers: false # includes a list of papers marked as "selected={true}"
 social: true  # includes social icons at the bottom of the page
 ---
 
-Hi! I'm Raphael Blanchard. I am a master student at Ecole Centrale Nantes (ECN) studying Advanced Robotics with a focus on Computer Vision.
+Hi! I'm Raphael Blanchard. I am a master student at Centrale Nantes (ECN) studying Advanced Robotics with a focus on Computer Vision.
 
 I am currently a research intern at the CMU's [AirLab](https://theairlab.org/) to work on research related to the use of SLAM in perceptually-degraded environments. See more [here](https://superodometry.com/).
 
+I am interested in the development of robust SLAM systems and ultimately would like to explore their use for autonomous planetary exploration in outer-space.🚀
 
 <!-- 
 Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
