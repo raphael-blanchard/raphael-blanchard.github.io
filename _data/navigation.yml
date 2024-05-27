@@ -15,8 +15,8 @@ main:
   # - title: "Blog Posts"
   #   url: /year-archive/
 
-  # - title: "Space Launches"
-  #   url: /space-launches/
+  - title: "Space Launches"
+    url: /space-launches/
     
   - title: "CV"
     url: /cv/

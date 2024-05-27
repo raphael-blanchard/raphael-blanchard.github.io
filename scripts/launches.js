@@ -17,20 +17,11 @@ async function launches() {
     divElement.className = 'launches-container';
     mainContent.appendChild(divElement);
 
-    const name = list_launches[i]["name"];
-    const company_name = list_launches[i]["launch_service_provider"]["name"];
-    const pad_location = list_launches[i]["pad"]["name"];
-    let description_API = list_launches[i]['mission'] ? list_launches[i]['mission']['description'] : "Nothing to display.";
-    console.log(description_API);
-    const go_tbd_success = list_launches[i]['status']['name'];
-
-    const launch_time = list_launches[i]["net"];
-    const launch_time_formatted = `${launch_time[5]}${launch_time[6]}/${launch_time[8]}${launch_time[9]}/${launch_time[0]}${launch_time[1]}${launch_time[2]}${launch_time[3]}-${launch_time[11]}${launch_time[12]}${launch_time[13]}${launch_time[14]}${launch_time[15]}${launch_time[16]}${launch_time[17]}${launch_time[18]} UTC+0`;
-
     // Create a first column for image
     let col1 = document.createElement('div');
     col1.style.position = "relative"; /* Ensure the description button is positioned correctly */
-    col1.className = 'col-sm-6';
+    col1.style.flex = "0 0 275px"; /* Set flex basis to match the image width */
+    col1.style.height = "333px"; /* Set height to match the image height */
     let image_rocket = document.createElement('img');
     image_rocket.className = 'launches-image';
     col1.appendChild(image_rocket);
@@ -44,24 +35,24 @@ async function launches() {
     col2.className = 'launches-content';
     let rocket_name = document.createElement('h4');
     rocket_name.className = 'launches-rocket-name';
-    rocket_name.innerHTML = name;
+    rocket_name.innerHTML = list_launches[i]["name"];
     let company = document.createElement('h6');
     company.className = 'launches-company-pad';
-    company.innerHTML = company_name;
+    company.innerHTML = list_launches[i]["launch_service_provider"]["name"];
     let pad = document.createElement('h6');
     pad.className = 'launches-company-pad';
-    pad.innerHTML = pad_location;
+    pad.innerHTML = list_launches[i]["pad"]["name"];
     let countdown = document.createElement('h1');
     countdown.className = 'launches-countdown';
     countdown.innerHTML = 'T- 00 : 00 : 00 : 00';
     let date_launch = document.createElement('h6');
     date_launch.className = 'launches-date';
-    date_launch.innerHTML = launch_time_formatted;
+    date_launch.innerHTML = new Date(list_launches[i]["net"]).toUTCString();
     let status_column = document.createElement('div');
     status_column.className = 'launches-status-column';
     let status = document.createElement('a');
-    status.className = `launches-${go_tbd_success.toLowerCase()}`;
-    status.innerHTML = go_tbd_success;
+    status.className = `launches-${list_launches[i]['status']['name'].toLowerCase()}`;
+    status.innerHTML = list_launches[i]['status']['name'];
 
     if (image_src) {
       description_button.innerHTML = 'DESCRIPTION';
@@ -73,7 +64,7 @@ async function launches() {
 
     // Listen to the different buttons
     description_button.addEventListener("mouseover", () => {
-      description_button.innerHTML = description_API;
+      description_button.innerHTML = list_launches[i]['mission'] ? list_launches[i]['mission']['description'] : "Nothing to display.";
     });
 
     description_button.addEventListener("mouseout", () => {
@@ -92,31 +83,24 @@ async function launches() {
 
     // Countdown function
     function countdown_function() {
-      const today = new Date();
-      const dateTime_parsed = Date.parse(today);
-      const launch_time_parsed = Date.parse(launch_time);
-      const difference = (launch_time_parsed - dateTime_parsed) / 1000;
+      const now = new Date().getTime();
+      const launchTime = new Date(list_launches[i]["net"]).getTime();
+      const distance = launchTime - now;
 
-      function secondsToDhms(seconds) {
-        seconds = Number(seconds);
-        const d = Math.floor(seconds / (3600 * 24));
-        const h = Math.floor((seconds % (3600 * 24)) / 3600);
-        const m = Math.floor((seconds % 3600) / 60);
-        const s = Math.floor(seconds % 60);
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        const dDisplay = d < 10 ? `T- 0${d} : ` : `T- ${d} : `;
-        const hDisplay = h < 10 ? `0${h} : ` : `${h} : `;
-        const mDisplay = m < 10 ? `0${m} : ` : `${m} : `;
-        const sDisplay = s < 10 ? `0${s}` : s;
+      countdown.innerHTML = `T- ${days < 10 ? '0' : ''}${days} : ${hours < 10 ? '0' : ''}${hours} : ${minutes < 10 ? '0' : ''}${minutes} : ${seconds < 10 ? '0' : ''}${seconds}`;
 
-        return d < 0 || h < 0 || m < 0 || s < 0 ? 'ALREADY LIFTED OFF' : `${dDisplay}${hDisplay}${mDisplay}${sDisplay}`;
+      if (distance < 0) {
+        clearInterval(interval);
+        countdown.innerHTML = "ALREADY LIFTED OFF";
       }
-
-      countdown.innerHTML = secondsToDhms(difference);
     }
 
-    // Update the countdown every second
-    setInterval(countdown_function, 1000);
+    const interval = setInterval(countdown_function, 1000);
   }
 }
 
