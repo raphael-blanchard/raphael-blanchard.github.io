@@ -18,8 +18,8 @@ main:
   - title: "Space Launches"
     url: /space-launches/
     
-  - title: "Documents"
-    url: /docs/
+  # - title: "Documents"
+  #   url: /docs/
     
   # - title: "Guide"
   #   url: /markdown/
